@@ -39,5 +39,4 @@ try {
 } catch (e) {
 	console.log("catch error")
 	console.warn(e)
-
 }
