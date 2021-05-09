@@ -1,17 +1,20 @@
 import db from "./Database.js"
-
-export default async function (req, res) {
+import createNode from "./Blockchain/createNode.js"
+export default async function onCreateUser(req, res) {
 	try {
 		console.log("Request on create user: " + JSON.stringify(req.body))
+
 
 		var user = await db.Users.create({
 			email: req.body.email,
 			password: req.body.password,
 			name: req.body.name,
-			walletToken: req.body.walletToken,
-			walletKey: req.body.walletKey
+			account: "temp",
 		})
-
+		console.log("Start creating user")
+		var node = await createNode(req.body.name, user.dataValues.id)
+		console.log("Stop creating user")
+		console.log(node)
 		if (user) {
 			res.status(200).send(user)
 		} else {
@@ -24,5 +27,4 @@ export default async function (req, res) {
 		console.log("Error:")
 		console.warn(e)
 	}
-
 }

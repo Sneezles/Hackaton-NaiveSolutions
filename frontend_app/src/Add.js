@@ -18,10 +18,10 @@ import { MenuItem, Select } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
-		marginTop: theme.spacing(8),
+		marginTop: theme.spacing(1),
 		display: 'flex',
 		flexDirection: 'column',
-		alignItems: 'center',
+		alignItems: 'left',
 	},
 	avatar: {
 		margin: theme.spacing(1),
@@ -55,12 +55,13 @@ export default function SignUp() {
 	const onCreateUser = async () => {
 		console.log(global)
 		try {
-			var res = await axios.post("http://localhost:8000/addContent", {
+			var res = await axios.post("http://188.166.122.66:8000/addContent", {
 				name,
 				price,
 				type,
 				data,
-				creator: global.context.user.id
+				creator: global.context.user.id,
+				anonymus: false,
 			})
 			console.log(res)
 			history.push('/home')
@@ -70,14 +71,14 @@ export default function SignUp() {
 		}
 	}
 	return (
-		<Container component="div" maxWidth="xs">
+		<Container component="div" maxWidth="lg">
 			<CssBaseline />
 			<div className={classes.paper}>
-				<Typography component="h1" variant="h5">
+				<Typography component="h1" variant="h5" style={{marginBottom: "20px"}}>
 					New content
-        </Typography>
-				<Grid container spacing={2}>
-					<Grid item xs={12} >
+        		</Typography>
+				<Grid container spacing={3}>
+					<Grid item xs={4}>
 						<TextField
 							variant="outlined"
 							required
@@ -90,7 +91,8 @@ export default function SignUp() {
 							onChange={e => { setName(e.target.value) }}
 						/>
 					</Grid>
-					<Grid item xs={12}>
+					<Grid item xs={8}></Grid>
+					<Grid item xs={4}>
 						<Select
 							className={classes.select}
 							fullWidth
@@ -106,7 +108,8 @@ export default function SignUp() {
 							<MenuItem value={"video"}>Video</MenuItem>
 						</Select>
 					</Grid>
-					<Grid item xs={12}>
+					<Grid item xs={8}></Grid>
+					<Grid item xs={4}>
 						<TextField
 							variant="outlined"
 							required
@@ -119,6 +122,7 @@ export default function SignUp() {
 							onChange={e => { setPrice(e.target.value) }}
 						/>
 					</Grid>
+					<Grid item xs={8}></Grid>
 					<Grid item xs={12} className={classes.dataItem}>
 						<TextField
 							variant="outlined"

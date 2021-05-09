@@ -1,4 +1,5 @@
 import db from "./Database.js"
+import sendFounds from "./Blockchain/sendFunds.js"
 
 export default async function (req, res) {
 	try {
@@ -18,7 +19,9 @@ export default async function (req, res) {
 
 		console.log("Sending payment from " + consumer.dataValues.name + " to " + creator.dataValues.name + " amount: " + req.body.price)
 
+		await sendFounds(consumer.dataValues.name, creator.dataValues.name, req.body.price)
 
+		console.log("Send successful")
 		res.status(200).send("Send successful")
 
 

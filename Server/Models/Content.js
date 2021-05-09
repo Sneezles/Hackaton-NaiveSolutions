@@ -20,8 +20,18 @@ export default (sq) => {
 				unique: false,
 			},
 			data: {
-				type: Sequelize.STRING,
+				type: Sequelize.TEXT,
 				allowNull: false,
+				unique: false,
+			},
+			anonymus: {
+				type: Sequelize.BOOLEAN,
+				allowNull: false,
+				unique: false,
+			},
+			account: {
+				type: Sequelize.STRING,
+				allowNull: true,
 				unique: false,
 			},
 		},

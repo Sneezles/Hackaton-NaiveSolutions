@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Link as LinkRoute, useHistory } from "react-router-dom"
 import axios from "axios"
+import GlobalContext from "./GlobalContext.js"
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 
@@ -51,30 +53,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const username = "test" + Date.now()
   const classes = useStyles();
   let history = useHistory();
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
-  const [walletToken, setWalletToken] = useState("")
-  const [walletKey, setWalletKey] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState(username)
+  const [password, setPassword] = useState(username)
+  const [name, setName] = useState(username)
+  const global = useContext(GlobalContext);
 
 
   const onCreateUser = async () => {
+    setLoading(true)
     try {
-      var res = await axios.post("http://localhost:8000/createUser", {
+      var res = await axios.post("http://188.166.122.66:8000/createUser", {
         email,
         password,
         name,
-        walletKey,
-        walletToken
       })
       console.log(res)
+      global.setContext({ user: res.data })
       history.push('/home')
     } catch (e) {
       console.log("Error")
       console.warn(e)
     }
+    setLoading(false)
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -119,32 +123,6 @@ export default function SignUp() {
               variant="outlined"
               required
               fullWidth
-              name="walletToken"
-              label="Wallet Token"
-              type="walletToken"
-              id="walletToken"
-              value={walletToken}
-              onChange={e => { setWalletToken(e.target.value) }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
-              name="walletKey"
-              label="Wallet Key"
-              type="walletKey"
-              id="walletKey"
-              value={walletKey}
-              onChange={e => { setWalletKey(e.target.value) }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
               name="password"
               label="Password"
               type="password"
@@ -161,9 +139,8 @@ export default function SignUp() {
           color="primary"
           className={classes.submit}
           onClick={onCreateUser}
-        >
-          Sign Up
-          </Button>
+        >{loading ? <CircularProgress color="secondary"></CircularProgress> : <Typography>Sign Up</Typography>}
+        </Button>
         <Grid container justify="flex-end">
           <Grid item>
             <LinkRoute to="/singin">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,6 +21,10 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Sidebar from './Sidebar';
 import Content from "./Content.js"
 import { Link as LinkRoute, useHistory } from "react-router-dom"
+import { Icon } from '@iconify/react';
+import bitcoinIcon from '@iconify-icons/mdi/bitcoin';
+import axios from "axios"
+import GlobalContext from "./GlobalContext.js"
 
 
 function Copyright() {
@@ -115,11 +119,18 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+  btcicon: {
+    marginBottom: -2,
+  }
 }));
 
 export default function Dashboard() {
   const classes = useStyles();
+  const global = useContext(GlobalContext)
   const [open, setOpen] = React.useState(true);
+  const [loadinBalance, setLoadingBalance] = React.useState(true);
+  const [balance, setBalance] = React.useState(0);
+  const [intervalID, setIntervalID] = React.useState(null);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -127,6 +138,30 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const getBalance = async () => {
+    var ret = await axios.post("http://188.166.122.66:8000/getBalance", {
+      id: global.context.user.id
+    })
+    setBalance(ret.data)
+  }
+
+  useEffect(() => {
+    var intervalInternal = null;
+    console.log("Setting interval");
+    intervalInternal = setInterval(async () => {
+      console.log("Updating balance data: ");
+      await getBalance();
+      if (balance > 0) {
+        clearInterval(intervalInternal);
+      }
+    }, 5000);
+    setIntervalID(intervalInternal);
+    return (() => {
+      console.log("Unmouting interval: " + intervalInternal);
+      clearInterval(intervalID);
+    }).bind(intervalID);
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -144,6 +179,9 @@ export default function Dashboard() {
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             SolutionsTube
+          </Typography>
+          <Typography variant="h6" className={classes.title}>
+            Balance: {balance} <Icon className={classes.btcicon} icon={bitcoinIcon} />
           </Typography>
           <LinkRoute to="/singin">
             <IconButton color="secondary">

@@ -59,7 +59,7 @@ export default function SignIn() {
   const onLogin = async () => {
     console.log("loging in with username: " + email + " and password " + password)
     try {
-      var res = await axios.post("http://localhost:8000/login", {
+      var res = await axios.post("http://188.166.122.66:8000/login", {
         email: email,
         password: password
       })
