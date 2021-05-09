@@ -195,34 +195,6 @@ export default function SignUp() {
 			})}
 		</List>		
 			<CssBaseline />
-			<div className={classes.paper}>
-				{content.map(c => {
-					return <Paper variant="outlined" className={classes.contentPaper}>
-						<Grid container spacing={4} justify='space-between'>
-							<Grid item>
-								<Typography>
-									{c.name}
-								</Typography>
-								<Typography numberOfLines={1}>{c.data.split('\n')[0]}</Typography>
-							</Grid>
-							<Grid item>
-								<Typography>
-									{c.price}<Icon className={classes.btcicon} icon={bitcoinIcon} />
-								</Typography>
-							</Grid>
-							<Grid item>
-								<Button variant="outlined"
-									onClick={() => {
-										sendPayment(c.creator, c.price)
-										setOpenContent(c)
-									}}
-								>
-									Rent
-								</Button>
-							</Grid>
-						</Grid>
-					</Paper>
-				})}
 				<Dialog
 					open={!!openContent}
 					onClose={() => {
@@ -250,7 +222,6 @@ export default function SignUp() {
 					  </Container>
 					  </DialogContent>
 				</Dialog>
-			</div>
 		</Container >
 	);
 }
