@@ -181,6 +181,9 @@ export default function Dashboard() {
             SolutionsTube
           </Typography>
           <Typography variant="h6" className={classes.title}>
+            User name: {global.context.user.name}
+          </Typography>
+          <Typography variant="h6" className={classes.title}>
             Balance: {balance} <Icon className={classes.btcicon} icon={bitcoinIcon} />
           </Typography>
           <LinkRoute to="/singin">
