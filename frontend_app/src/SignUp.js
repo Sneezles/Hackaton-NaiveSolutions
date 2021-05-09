@@ -57,9 +57,9 @@ export default function SignUp() {
   const classes = useStyles();
   let history = useHistory();
   const [loading, setLoading] = useState(false)
-  const [email, setEmail] = useState(username)
-  const [password, setPassword] = useState(username)
-  const [name, setName] = useState(username)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [name, setName] = useState("")
   const global = useContext(GlobalContext);
 
 

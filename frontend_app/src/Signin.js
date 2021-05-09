@@ -53,8 +53,8 @@ export default function SignIn() {
   const classes = useStyles();
   let history = useHistory();
   const global = useContext(GlobalContext);
-  const [email, setEmail] = useState("root")
-  const [password, setPassword] = useState("root")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
 
   const onLogin = async () => {
     console.log("loging in with username: " + email + " and password " + password)
